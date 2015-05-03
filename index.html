@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dc/1.7.3/dc.css"/>
+
+
+
+<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+<script type="text/javascript" src="https://rawgithub.com/NickQiZhu/dc.js/master/web/js/crossfilter.js"></script>
+<script src="lib/dc.js"></script>
+
+<style>
+#SideeffectsHeading1 {
+    
+    
+    
+    padding:5px;
+	font:  20px sans-serif;
+}
+
+#Sideeffectsline1{
+    
+    height: 20px;
+    
+    position: relative;
+}
+
+#Sideeffectsline1:after {
+    border-top: 2px solid steelblue;
+    width: 100%;
+    height: 50%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    content: '';
+}
+Sideeffects_table{
+   border: 1px solid black;
+}
+Sideeffects_table{
+width: 80%
+}
+#Sideeffectstablecontainer
+{
+    width: 700px;
+    float: left;
+    height: 600px;
+	  margin-top: 50px;
+    margin-bottom: 50px;
+    margin-right: 50px;
+		font:  12px sans-serif;
+    
+}
+#container1{
+width: auto;
+}
+
+#Genderdist svg{ width: 500px;
+    float: right;
+    height: 250px;
+	
+	 
+    margin-right: 50px;
+		font:  12px sans-serif;
+     }
+#Reasondist svg{ width: 500px;
+    float: right;
+    height: 250px;
+	
+	 
+    margin-right: 50px;
+		font:  12px sans-serif;
+     }
+	 
+	 
+	 #Agedist svg{ width: 500px;
+    float: right;
+    height: 250px;
+	
+	 
+    margin-right: 50px;
+		font:  12px sans-serif;
+     }
+	 
+	 
+#Ratingseries svg{ width: 800px;
+    float: right;
+    height: 200px;
+	
+	 
+    margin-right: 50px;
+		font:  12px sans-serif;
+     }	 
+#Ratingseries2 svg{ width: 800px;
+    float: right;
+    height: 200px;
+	
+	 
+    margin-right: 50px;
+		font:  12px sans-serif;
+     }
+	 
+#Mainsideeffectscases svg{ width: 800px;
+    float: right;
+    height: 300px;
+	
+	 
+    margin-right: 50px;
+		font:  12px sans-serif;
+     }
+	 
+	 
+</style>
+
+
+
+
+
+
+
+<div id="SideeffectsHeading1">
+<h1>Side Effects Analysis- Interactive Visualizations</h1>
+
+ <p>YiChuan Wang, Yedurag Babu</p>
+ <p>Data Analysts at Auburn University</p>
+ <p>Email: yzw0037@tigermail.auburn.edu</p>
+</div>
+
+<div id="Sideeffectsline1">
+</div>
+
+
+<div class="container" id = 'container1'>
+
+<h3><b><font size="4">Side Effects Analysis Interactive Visualizations</font></b></h3>
+
+<p align = "justify"> The visualizations below are made possible by 
+		 <a href="http://dc-js.github.io/dc.js/"> dc.js </a>, which is a cool javascript library with native cross filter support for exploration of
+		 multidimensional datasets. 
+		 Other javascript libraries used here are <a href="http://d3js.org/"> d3.js </a>, a highly popular javascript library which has revolutionized 
+		 data visualization and <a href="http://square.github.io/crossfilter/"> crossfilter.js </a>, which enabled fast multidimensional filtering for coordinated
+		 views. 
+		
+		 
+    </p>
+	
+	
+
+<div class="clearfix"></div>
+
+
+
+
+<div class='container' style='font: 12px sans-serif' id='Sideeffectstablecontainer'>
+  <div class='row'>
+    <div class='span2'>
+      <table class='table table-hover' id='Sideeffects_table'>
+        <thead>
+          <tr class='header'>
+            <th>Date Posted</th>
+			<th>Gender</th>
+			<th>Age</th>
+			<th>Rating</th>
+            <th>Side Effects</th>
+            
+           
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="Genderdist" > 
+        <strong>Distribution by gender</strong> 
+		<p>Donut chart showing number of cases by gender</p>
+        <a class="reset" href="javascript:Genderdist.filterAll();dc.redrawAll();" style="display: none;"></a>
+      
+        
+    </div>
+	
+<div id="Reasondist" > 
+        <strong>Primary reason for medication</strong> 
+		<p>Donut chart showing number of cases by primary reason to take the medication</p>
+        <a class="reset" href="javascript:Reasondist.filterAll();dc.redrawAll();" style="display: none;"></a>
+      
+        
+    </div>
+	
+<div id="Agedist" > 
+        <strong>Distribution by age groups</strong> 
+		<p>Donut chart showing number of cases by age groups</p>
+        <a class="reset" href="javascript:Agedist.filterAll();dc.redrawAll();" style="display: none;"></a>
+      
+        
+    </div>
+
+<div id="Ratingseries" > 
+        <strong>Rating time series</strong> 
+		<p>Time series for average Askapatient.com rating</p>
+		<p>Brush over to interact</p>
+        <a class="reset" href="javascript:Ratingseries.filterAll();dc.redrawAll();" style="display: none;"></a>
+      
+        
+    </div>
+<div id="Ratingseries2" > 
+        <strong>Number of cases time series</strong> 
+		<p>Time series for total number of cases</p>
+		<p>Brush over to interact</p>
+        <a class="reset" href="javascript:Ratingseries2.filterAll();dc.redrawAll();" style="display: none;"></a>
+      
+        
+    </div>
+<div class="clearfix"></div>	
+<div id="Mainsideeffectscases" > 
+        <strong>Variation of number of cases for each side effect</strong> 
+		<p>Composite time series chart for number of cases</p>
+		
+        <a class="reset" href="javascript:Mainsideeffectscases.filterAll();dc.redrawAll();" style="display: none;"></a>
+      
+        
+    </div>
+	
+<div>
+      <a href="javascript:dc.filterAll(); dc.renderAll();">Reset the Viz</a>
+    </div>
+</div>
+
+	
+
+
+
+
+
+
+
+
+<script>
+
+
+  // Create the dc.js chart objects & link to div
+
+var dataTable = dc.dataTable("#Sideeffects_table");
+var Genderdist = dc.pieChart("#Genderdist");
+var Reasondist = dc.pieChart("#Reasondist");
+var Agedist = dc.pieChart("#Agedist");
+var Ratingseries = dc.lineChart("#Ratingseries");
+var Ratingseries2 = dc.lineChart("#Ratingseries2");
+
+var Mainsideeffectscases = dc.compositeChart("#Mainsideeffectscases");
+
+d3.csv("Maintable1.csv", function (data) {
+
+var dateformat = d3.time.format("%y-%b");
+var dateformat2 = d3.time.format("%m/%d/%Y");
+
+  data.forEach(function(d) { 
+    d.Side_Effects = d["Side Effects"];
+	d.dateinmonth = dateformat.parse(d["DateinMonth"]);
+	d.dateposted = dateformat2.parse(d["Date"]);
+	d.rating = parseInt(d["Rating"]);
+	d.gender = d["Sex"];
+	d.age = parseInt(d["Age"]);
+	d.agebin = d["Age_bin"];
+	d.reason1 = d["Reason1"];
+	d.diarrhoea = parseInt(d["Diarrhoea"]);
+	d.fatigue = parseInt(d["Fatigue"]);
+	d.digestive = parseInt(d["Digestive Problems"]);
+	d.pain = parseInt(d["Pain"]);
+	d.nausea = parseInt(d["Nausea and Dizziness"]);
+	d.headache = parseInt(d["Head Ache"]);
+	d.appetite = parseInt(d["Decreased appetite"]);
+	d.dateYear = parseInt(d["DateinYear"])
+	
+  });
+  
+  
+
+ 
+
+
+  // Run the data through crossfilter and load our tweets
+  var sideeffects = crossfilter(data);
+
+  // Create dataTable dimension
+ 
+  
+  var datepoint = sideeffects.dimension(function (d) {
+            return d.dateinmonth ;
+        }); 
+		
+var datepoint1 = sideeffects.dimension(function (d) {
+            return d.dateinmonth.getFullYear() ;
+        }); 
+  var genderdim = sideeffects.dimension(function (d) {
+            return d.gender;
+        })
+	var reasondim = sideeffects.dimension(function (d) {
+            return d.reason1;
+        })
+		
+	var agebindim = sideeffects.dimension(function (d) {
+            return d.agebin;
+        })
+		
+	var yeardim = sideeffects.dimension(function (d) {
+            return d.dateYear;
+        })
+ 
+	var minusDate = datepoint.bottom(1)[0].dateinmonth;
+	var maxusDate = datepoint.top(1)[0].dateinmonth;		
+	function reduceAdd(p,v) {
+			++p.count
+			p.rating = p.rating + parseInt(v.rating);
+			p.avgrating = p.rating/p.count;
+			return p;
+			}
+		function reduceRemove(p,v) {
+			--p.count
+			p.rating = p.rating - parseInt(v.rating);
+			p.avgrating = p.rating/p.count;
+			
+			return p;
+			}
+		function reduceInitial() {
+			return {count:0, rating:0, avgrating:0};
+			}
+	
+	
+	var gendersum = genderdim.group().reduce(reduceAdd, reduceRemove, reduceInitial);
+	var reasonsum = reasondim.group().reduce(
+                function (p, v) {
+					++p.count				
+					
+                    return p;
+                },
+                function (p, v) {
+					--p.count
+					
+					
+					
+                    return p; 
+                },
+                function () {
+                    return {count: 0} 
+                }
+        )
+		
+	var agesum = agebindim.group().reduce(
+                function (p, v) {
+					++p.count				
+					
+                    return p;
+                },
+                function (p, v) {
+					--p.count
+					
+					
+					
+                    return p; 
+                },
+                function () {
+                    return {count: 0} 
+                }
+        )
+	var ratingstat = datepoint.group().reduce(
+                function (p, v) {
+					++p.count				
+					p.rating = p.rating + parseInt(v.rating);
+					p.avgrating = parseFloat(p.rating/p.count);
+                    return p;
+                },
+                function (p, v) {
+					--p.count
+					p.rating = p.rating - parseInt(v.rating);
+					p.avgrating = parseFloat(p.rating/p.count);
+					
+					
+                    return p; 
+                },
+                function () {
+                    return {count: 0,rating:0, avgrating:0} 
+                }
+        )
+	
+	var yearstat = datepoint1.group().reduce(
+                function (p, v) {				
+					p.diarrhoea = p.diarrhoea + parseInt(v.diarrhoea);
+					p.fatigue = p.fatigue + parseInt(v.fatigue);
+					p.digestive = p.digestive + parseInt(v.digestive);
+					p.pain = p.pain + parseInt(v.pain);
+					p.nausea = p.nausea + parseInt(v.nausea);
+					p.headache = p.headache + parseInt(v.headache);
+					p.appetite = p.headache + parseInt(v.appetite);
+                    return p;
+                },
+                function (p, v) {
+					
+					p.diarrhoea = p.diarrhoea - parseInt(v.diarrhoea);
+					p.fatigue = p.fatigue - parseInt(v.fatigue);
+					p.digestive = p.digestive - parseInt(v.digestive);
+					p.pain = p.pain - parseInt(v.pain);
+					p.nausea = p.nausea - parseInt(v.nausea);
+					p.headache = p.headache - parseInt(v.headache);
+					p.appetite = p.headache - parseInt(v.appetite);
+					
+					
+                    return p; 
+                },
+                function () {
+                    return {diarrhoea: 0,fatigue:0, digestive:0,pain:0,nausea:0,headache:0,appetite:0} 
+                }
+        )
+	
+	var colorScalegender = d3.scale.ordinal().domain(["M", "F",""])
+                                   .range(["#1b9e77", "#7570b3","#f5f5f5"]);
+	var colorScalereason = d3.scale.ordinal().range(["#a6cee3", "#1f78b4","#b2df8a","#33a02c","#fb9a99","#e31a1c","#fdbf6f","#ff7f00","#cab2d6"]);
+	
+	var colorScaleagebin = d3.scale.ordinal().range(["#a6cee3", "#1f78b4","#b2df8a","#33a02c","#fb9a99","#e31a1c","#fdbf6f","#ff7f00"]);
+	
+	
+  Genderdist
+    .width(200)
+    .height(200)
+    .innerRadius(50)
+    .dimension(genderdim)
+	.colors(function(d){ return colorScalegender(d); })
+    .group(gendersum)
+	 .valueAccessor(function(p) { return p.value.count; })
+    .legend(dc.legend().x(350).y(100).gap(5))
+	.render();
+	
+	Reasondist
+    .width(200)
+    .height(200)
+    .innerRadius(50)
+    .dimension(reasondim)
+	.colors(function(d){ return colorScalereason(d); })
+    .group(reasonsum)
+	 .valueAccessor(function(p) { return p.value.count; })
+    .legend(dc.legend().x(350).y(100).gap(5))
+	.render();
+	
+	Agedist
+    .width(200)
+    .height(200)
+    .innerRadius(50)
+    .dimension(agebindim)
+	.colors(function(d){ return colorScaleagebin(d); })
+    .group(agesum)
+	 .valueAccessor(function(p) { return p.value.count; })
+    .legend(dc.legend().x(350).y(100).gap(5))
+	.render();
+	
+	Ratingseries
+    .width(800)
+    .height(200)
+    .x(d3.time.scale().domain([minusDate,maxusDate]))
+	.elasticY(true)
+	
+       
+    .renderArea(false)
+    .brushOn(true)
+    .renderDataPoints(false)
+    .clipPadding(10)
+    .yAxisLabel("Average Rating 1: Low 5: High)")
+	.xAxisLabel("Time")
+    .dimension(datepoint)
+    .group(ratingstat)
+	.valueAccessor(function(p) { return p.value.count > 0 ? parseFloat(p.value.rating/p.value.count) : 0; })
+	.xAxis().ticks(25);
+	
+	Ratingseries2
+    .width(800)
+    .height(200)
+    .x(d3.time.scale().domain([minusDate,maxusDate]))
+	
+
+	.round(d3.time.month.round)
+    .xUnits(d3.time.months)
+	
+       
+    .renderArea(false)
+    .brushOn(false)
+    .renderDataPoints(true)
+    .clipPadding(10)
+    .yAxisLabel("Number of cases")
+	.xAxisLabel("Time")
+    .dimension(datepoint)
+    .group(ratingstat)
+	.valueAccessor(function(p) { return p.value.count; })
+	.xAxis().ticks(25);
+	
+	Mainsideeffectscases
+					.width(800)
+        .height(300)
+		
+       .x(d3.time.scale().domain([minusDate,maxusDate]))
+		
+
+	
+		  
+		.elasticX(true)
+		.elasticY(true)
+		.xAxisPadding(0.4)
+		 .xAxisLabel("Years")
+        .yAxisLabel("Number of cases")
+        .legend(dc.legend().x(80).y(20).itemHeight(13).gap(5))
+        .renderHorizontalGridLines(true)
+		
+        .compose([
+            dc.lineChart(Mainsideeffectscases)
+                .dimension(datepoint1)
+                .colors('#a6cee3')
+				
+				
+                .group(yearstat, "Diarrhoea")
+					.valueAccessor(function(p) {
+                    return p.value.diarrhoea > 0 ? p.value.diarrhoea : 0;
+                }),
+                
+            dc.lineChart(Mainsideeffectscases)
+                .dimension(datepoint1)
+                .colors('#1f78b4')
+				
+               .group(yearstat, "Fatigue")
+					.valueAccessor(function(p) {
+                    return p.value.fatigue > 0 ? p.value.fatigue : 0;
+                }),
+				
+			dc.lineChart(Mainsideeffectscases)
+                .dimension(datepoint1)
+                .colors('#b2df8a')
+			
+               .group(yearstat, "Digestive Problem")
+					.valueAccessor(function(p) {
+                    return p.value.digestive > 0 ? p.value.digestive : 0;
+                }),
+				
+			dc.lineChart(Mainsideeffectscases)
+                .dimension(datepoint1)
+                .colors('#33a02c')
+				
+               .group(yearstat, "Pain")
+					.valueAccessor(function(p) {
+                    return p.value.pain > 0 ? p.value.pain : 0;
+                }),
+				
+			dc.lineChart(Mainsideeffectscases)
+                .dimension(datepoint1)
+                .colors('#fb9a99')
+				
+               .group(yearstat, "Nausea/dizziness/vomiting")
+					.valueAccessor(function(p) {
+                    return p.value.nausea> 0 ? p.value.nausea : 0;
+                }),
+				
+			dc.lineChart(Mainsideeffectscases)
+                .dimension(datepoint1)
+                .colors('#e31a1c')
+				
+               .group(yearstat, "Head Ache")
+					.valueAccessor(function(p) {
+                    return p.value.headache> 0 ? p.value.headache : 0;
+                }),
+			dc.lineChart(Mainsideeffectscases)
+                .dimension(datepoint1)
+                .colors('#fdbf6f')
+				
+               .group(yearstat, "Decreased appetite")
+					.valueAccessor(function(p) {
+                    return p.value.appetite> 0 ? p.value.appetite : 0;
+                })
+				
+				
+            ])
+			.xAxis().ticks(15)
+			
+		
+       
+	
+	
+
+	
+	
+	
+   dataTable.width(800).height(500)
+    .dimension(datepoint)
+    .group(function(d) { return "Side Effects for Glucophage"
+     })
+    .size(10)
+    .columns([
+      //function(d) { return d.created_at; }
+      function(d) { return (d.dateposted.getMonth() + 1) + "/" + d.dateposted.getDate() + "/" + d.dateposted.getFullYear(); },
+	  function(d) { return d.gender; },
+	  function(d) { return d.age; },
+	  function(d) { return d.rating; },
+	  function(d) { return d.Side_Effects; }
+      
+     ])
+    .sortBy(function(d){ return d.dateposted;} )
+    .order(d3.descending);
+	
+	
+	
+dc.renderAll();	
+  
+});
+
+
+
+
+  
+  
+  
+</script>
+
+
+
+
+
+</html>
